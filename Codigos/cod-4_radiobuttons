@@ -1,0 +1,54 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_04
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_04.
+
+
+*DECLARAÇÃO
+TABLES: mara.
+
+*SEMPRE COMEÇÃR CONSTRUINDO OS "CAMPOS" DA TELA DEPOIS O RESTANTES DOS OBJETOS
+
+*SELECT-OPTIONS: s_mat FOR mara-matnr.
+
+PARAMETERS: p_matnr TYPE mara-matnr." 'mara' é a tabela, 'matnr' é o tipo do campo (char de 18)
+
+* ESTOU COLOCANDO UM TITULO PARA A SELEÇÃO A COMECA AQUI
+SELECTION-SCREEN BEGIN OF BLOCK A WITH FRAME TITLE text-001. "COMEÇO DO BLOCO
+*RADIOBUTTON     definir o grupo   |  para que a seleção já vem selecionada usa-se o DEFAULT
+PARAMETERS: r_rd1 RADIOBUTTON GROUP A DEFAULT 'X',
+            r_rd2 RADIOBUTTON GROUP A.
+SELECTION-SCREEN END OF BLOCK  A. " FINAL DO BLOCO DA TELA
+          "GRUPO 2
+SELECTION-SCREEN BEGIN OF BLOCK B WITH FRAME TITLE text-002. "COMEÇO DO BLOCO
+PARAMETERS: r_rd3 RADIOBUTTON GROUP B DEFAULT 'X',
+            r_rd4 RADIOBUTTON GROUP B.
+SELECTION-SCREEN END OF BLOCK B. " FINAL DO BLOCO DA TELA
+
+
+CONSTANTS: c_giu(8) TYPE c VALUE 'GIULIANA'.
+* É A MAESMA COISA QUE "CONSTANTS: c_giu TYPE char8  VALUE 'giuliana'.
+CONSTANTS v_resposta(20) TYPE c VALUE 'Seja bem vinda'.
+
+*OUTROS OBJETOS
+
+DATA: v_material TYPE mara-matnr," vai receber o mesmo TYPE do PARAMETERS 'mara-matnr'
+      v_nome TYPE char20,
+      v_message(36) TYPE c.
+
+*EVENTO DE EXECUÇÃO
+
+START-OF-SELECTION.
+
+v_material = p_matnr.
+v_nome = c_giu.
+
+IF v_nome = v_material.
+  CONCATENATE v_resposta c_giu into v_message SEPARATED BY space.
+  WRITE v_message.
+else.
+  WRITE 'Usuário Inválido!'.
+
+ENDIF.

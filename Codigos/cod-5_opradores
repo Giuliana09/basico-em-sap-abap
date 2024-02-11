@@ -1,0 +1,37 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_05
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_05.
+
+* DECLARAÇÃO
+
+PARAMETERS: p_leite1 TYPE p DECIMALS 2,
+            p_leite2 TYPE p DECIMALS 2.
+
+
+*OUTROS OBJETOS
+
+DATA: v_soma TYPE p DECIMALS 2,
+      v_texto(12) TYPE c,
+      v_escreva(30) TYPE c.
+
+CONSTANTS: c_message(14) TYPE c VALUE 'O resultado é'.
+
+*EVENTO DE EXECUÇÃO
+
+START-OF-SELECTION.
+
+v_soma = p_leite1 + p_leite2.
+
+IF v_soma > 10.
+  v_texto = 'maior que 10'.
+
+else.
+  v_texto = 'menor que 10'.
+
+ENDIF.
+
+CONCATENATE c_message v_texto INTO v_escreva SEPARATED BY space. " SEPARATED BY space -> separa o texto dando um espaço
+WRITE v_escreva.

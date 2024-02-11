@@ -1,0 +1,27 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_03
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_03.
+
+
+*DECLARAÇÃO
+PARAMETERS atrasada TYPE string.
+
+
+
+*EVENTO DE EXECUÇÃO
+START-OF-SELECTION.
+
+IF atrasada = 'S'.
+  WRITE 'Caminho A'.
+
+ELSE.
+  WRITE 'Caminho B'.
+ENDIF.
+
+*F atrasada = 'N'.
+*WRITE 'Caminho B'.
+
+*NDIF.

@@ -1,0 +1,32 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_08
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_08.
+
+*AREA DE DECLARAÇÃO
+
+TABLES mara.
+
+PARAMETERS: p_matnr TYPE mara-matnr.
+*select-OPTIONS: s_matnr FOR mara-matnr.
+
+
+*OUTROS OBJETOS (DECLARAÇÃO DE VARIAVEIS INTERNAS)
+DATA: t_mara TYPE TABLE OF mara.
+
+
+*EVENTO DE EXECUÇÃO
+
+START-OF-SELECTION.
+
+SELECT *
+  FROM mara
+  INTO TABLE t_mara
+  WHERE matnr = p_matnr.
+
+  IF t_mara IS NOT INITIAL. "IS NOT INITIAL -> Não é vazia
+    WRITE 'Dados encontrados'.
+
+  ENDIF.

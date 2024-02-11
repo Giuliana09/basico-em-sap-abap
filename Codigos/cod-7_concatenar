@@ -1,0 +1,34 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_07
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_07.
+
+
+*DELARAÇÃO
+SELECTION-SCREEN BEGIN OF BLOCK UM WITH FRAME TITLE text-001.
+  PARAMETERS: p_num1 TYPE p DECIMALS 2,
+              P_num2 TYPE p DECIMALS 2.
+SELECTION-SCREEN END OF BLOCK UM.
+
+SELECTION-SCREEN BEGIN OF BLOCK DOIS WITH FRAME TITLE text-002.
+  PARAMETERS: p_nome TYPE char20,
+              p_sbnome TYPE char20.
+
+SELECTION-SCREEN END OF BLOCK DOIS.
+
+*OUTRO OBJETO
+DATA: v_soma TYPE p DECIMALS 2,
+      v_nomes(40) TYPE c.
+
+
+
+*EVENTO DE EXECUÇÃO
+START-OF-SELECTION.
+
+v_soma = p_num1 + p_num2.
+
+CONCATENATE p_nome P_sbnome INTO v_nomes SEPARATED BY space.
+
+WRITE: 'Valor da soma:', v_soma, 'Seu nome: ', v_nomes.

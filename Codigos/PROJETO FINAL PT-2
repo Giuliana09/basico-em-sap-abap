@@ -1,0 +1,114 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_11
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_11.
+
+*&---------------------------------------------------------------------*
+*&
+*&
+*&                 "PROJETO FINAL ABAP FOR GIRLS
+*&
+*&---------------------------------------------------------------------*
+
+*&---------------------------------------------------------------------*
+*&
+*&                      "DECLARAÇÕES
+*&
+*&---------------------------------------------------------------------*
+
+
+TABLES:ztcliente0440.
+
+
+*&---------------------------------------------------------------------*
+*&                 "DECLARAÇÃO DE TELAS
+*&---------------------------------------------------------------------*
+
+
+******** RADIOBUTTON PARA OPCÕES DE ESCOLHA (PARTE 1) ********
+SELECTION-SCREEN BEGIN OF BLOCK opcoes WITH FRAME TITLE TEXT-001."opcoes de escolha
+    PARAMETERS: r_cad RADIOBUTTON GROUP a,           "Cadastrar cliente
+                r_edi RADIOBUTTON GROUP a,           "Editar cliente
+                r_exi RADIOBUTTON GROUP a DEFAULT 'X'. "Exibir Relatório
+SELECTION-SCREEN END OF BLOCK opcoes.
+
+******** CAMPOS DE PREENCHIMENTO PARA OPÇÃO DE EXIBIÇÃO DE RELATÓRIO (PARTE 1) ********
+SELECTION-SCREEN BEGIN OF BLOCK relat WITH FRAME TITLE TEXT-002."Exibir Relatório cliente
+        SELECT-OPTIONS: s_cli FOR ztcliente0440-cliente,
+                        s_rg FOR ztcliente0440-rg,
+                        s_cpf FOR ztcliente0440-cpf.
+SELECTION-SCREEN END OF BLOCK relat.
+
+******** CAMPOS DE PREENCHIMENTO PARA OPÇÃO DE CADASTRAR CLIENTES (PARTE 2) ********
+SELECTION-SCREEN BEGIN OF BLOCK cadas WITH FRAME TITLE TEXT-003."Cadastra cliente
+        PARAMETERS: p_cli TYPE ztcliente0440-cliente,
+                    p_rg TYPE ztcliente0440-rg,
+                    p_cpf TYPE ztcliente0440-cpf,
+                    p_data TYPE ztcliente0440-data, ">>verificar o nome depois datanasc..
+                    p_end TYPE ztcliente0440-endereco.   ">> também verificar o nome
+SELECTION-SCREEN END OF BLOCK cadas.
+
+*&---------------------------------------------------------------------*
+*&                 "TABELAS INTERNAS
+*&---------------------------------------------------------------------*
+DATA: t_clientes TYPE TABLE OF ztcliente0440.
+
+*&---------------------------------------------------------------------*
+*&                 "WORKAREA (LINHA)
+*&---------------------------------------------------------------------*
+DATA: w_clientes TYPE ztcliente0440.
+
+
+*&---------------------------------------------------------------------*
+*&
+*&                      "EVENTO DE EXECUÇÃO
+*&
+*&---------------------------------------------------------------------*
+
+
+******** O COMANDO START-OF-SELECTION É UTILIZADO PARA TODA EXECUÇÃO APÓS O F8 (COMPILAR) ********
+START-OF-SELECTION.
+
+
+******** QUANDO A OPÇÃO EXIBIR RELATÓRIO FOR MARCADA:
+IF r_exi = 'X'.
+    SELECT *                    "Seleciona todos os campos
+      FROM ztcliente0440          "na tabela do BD
+        INTO TABLE t_clientes       "movendo para tabela interna
+         WHERE cliente IN s_cli AND  "com as senguintes condições
+               rg IN s_rg AND
+               cpf IN s_cpf.
+
+
+    "Se a tabela t_clientes estiver preenchida:
+    IF t_clientes IS NOT INITIAL.  "OUTRA POSSIBILIDADE >> sy-subrc = 0.
+        LOOP AT t_clientes INTO w_clientes."ler todos os registros da tabela interna, movendo para a linha
+            "exibir relatório
+        ENDLOOP.
+    ENDIF.
+ENDIF.
+
+"Se cadastar cliente (r_cad) estiver selecionado (valor = a X) >> parte 2
+IF r_cad = 'X'.
+    w_clientes-cliente = p_cli.  "linha w_clientes campo cliente, vai receber o valor que está dentro do parameter 'p_cli'
+    w_clientes-rg = p_rg.
+    w_clientes-cpf = p_cpf.
+    w_clientes-data = p_data. ">> verificar nome
+    w_clientes-endereco = p_end.
+
+   "INSERT w_clientes FROM ztcliente0440.   "Para inserir um registro na tabela interna
+    INSERT ztcliente0440 FROM w_clientes.   "Para inserir um registro no Bando de Dados
+
+    "certificar que o regirstro foi cadastrado
+    IF sy-subrc = 0. "Só efetiva a gravação se conseguir inserir
+        commit work."efetiva a gravação do regirstro no Bando de Dados
+        MESSAGE 'cliente cadastrado com sucesso' TYPE 'S'. "dar uma mesagem para o usuário
+
+    ELSE. "Senão - se ele não conseguiu inserir
+        MESSAGE 'cliente não pode ser cadastrado ' TYPE 'E'. "mensagem do tipo E de erro.
+        "**** existe três tipo (TYPE) de mensagem >> S: sucesso, E: erro, I: informação. Todos em maiusculo
+    ENDIF.
+
+ENDIF.

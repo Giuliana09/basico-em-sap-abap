@@ -1,0 +1,22 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_02
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_02.
+
+
+*DECLARAÇÃO
+PARAMETERS marca TYPE string.
+
+
+* EVENTO DE EXECUÇÃO
+
+START-OF-SELECTION.
+
+IF marca = 'NINHO'.
+  WRITE 'Compre'.
+
+ELSE.
+  WRITE 'Não Compre'.
+ENDIF.

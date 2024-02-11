@@ -1,0 +1,19 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_01
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_01.
+
+
+*DECLARAÇÃO
+PARAMETERS p_vleite TYPE p DECIMALS 2.
+
+*EVENTO DE EXECUÇÃO
+START-OF-SELECTION.
+
+IF  p_vleite <= 5.
+  WRITE 'Compre'.
+else.
+  WRITE 'Não compre'.
+ENDIF.

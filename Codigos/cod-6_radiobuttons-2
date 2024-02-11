@@ -1,0 +1,34 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_06
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_06.
+*DECLARAÇÃO -> SÃO parâmetros de entrada que podem ser preenchidos pelo usuário antes da execução do programa.
+TABLES: mara.
+
+PARAMETERS: p_nome TYPE mara-matnr.
+SELECT-OPTIONS: s_estado FOR mara-matnr.
+
+SELECTION-SCREEN BEGIN OF BLOCK 1 WITH FRAME TITLE text-001.
+  PARAMETERS: r_rd1 RADIOBUTTON GROUP UM DEFAULT 'X',
+              r_rd2 RADIOBUTTON GROUP UM .
+
+SELECTION-SCREEN END OF BLOCK 1.
+
+
+SELECTION-SCREEN BEGIN OF BLOCK 2 WITH FRAME TITLE text-002.
+  PARAMETERS: r_rd3 RADIOBUTTON GROUP DOIS DEFAULT 'X',
+              r_rd4 RADIOBUTTON GROUP DOIS,
+              r_rd5 RADIOBUTTON GROUP DOIS,
+              r_rd6 RADIOBUTTON GROUP DOIS.
+
+SELECTION-SCREEN END OF BLOCK 2.
+
+*OUTROS OBJETOS -> SÃO variáveis internas dentro do programa, utilizadas para armazenar valores temporários qualquer outra informação necessária durante a execução do programa
+
+
+
+
+* EVENTO DE EXECUÇÃO -> Lógica de processamento principal
+START-OF-SELECTION.

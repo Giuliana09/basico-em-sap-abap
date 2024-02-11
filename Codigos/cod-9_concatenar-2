@@ -1,0 +1,32 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_09
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_09.
+
+TABLES ztcliente0440.
+
+PARAMETERS: p_cpf TYPE ztcliente0440.
+
+
+
+DATA: t_cpf TYPE TABLE OF ztcliente0440.
+
+
+
+START-OF-SELECTION.
+
+
+
+SELECT *
+  FROM ztcliente0440
+  INTO TABLE t_cpf
+  WHERE CPF = p_cpf.
+
+  IF t_cpf IS NOT INITIAL.
+    WRITE: '  CPF INFORMADO: ', p_cpf, ' CPF Encontrado! '.
+else.
+  WRITE: '  CPF INFORMADO: ', p_cpf, ' CPF Não Encontrado!'.
+
+  ENDIF.

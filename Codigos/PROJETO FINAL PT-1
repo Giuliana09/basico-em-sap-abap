@@ -1,0 +1,74 @@
+ *&---------------------------------------------------------------------*
+ *&
+ *&                 "PROJETO FINAL ABAP FOR GIRLS
+ *&
+ *&---------------------------------------------------------------------*
+
+ *&---------------------------------------------------------------------*
+ *&
+ *&                      "DECLARAÇÕES
+ *&
+ *&---------------------------------------------------------------------*
+
+
+TABLES:ztcliente0440.
+
+
+ *&---------------------------------------------------------------------*
+ *&                 "DECLARAÇÃO DE TELAS
+ *&---------------------------------------------------------------------*
+ 
+ "******** RADIOBUTTON PARA OPCÕES DE ESCOLHA (PARTE 1) ********
+SELECTION-SCREEN BEGIN OF BLOCK opcoes WITH FRAME TITLE TEXT-001. 
+    PARAMETERS: r_cad RADIOBUTTON GROUP a, "Cadastrar cliente
+                r_edi RADIOBUTTON GROUP a, " Editar cliente
+                r_exi RADIOBUTTON GROUP DEFAULT 'X'. "Exibir Relatório
+SELECTION-SCREEN END OF BLOCK opcoes.
+
+"******** CAMPOS DE PREENCHIMENTO PARA OPÇÃO DE EXIBIÇÃO DE RELATÓRIO (PARTE 1) ********
+SELECTION-SCREEN BEGIN OF BLOCK relat WITH FRAME TITLE TEXT-002. 
+        SELECT-OPTIONS: s_cli FOR ztcliente0440-cliente,
+                        s_rg FOR ztcliente0440-rg,
+                        s_cpf FOR ztcliente0440-cpf.
+SELECTION-SCREEN END OF BLOCK relat. 
+
+ *&---------------------------------------------------------------------*
+ *&                 "TABELAS INTERNAS
+ *&---------------------------------------------------------------------*
+DATA: t_clientes TYPE OF ztcliente0440.
+
+ *&---------------------------------------------------------------------*
+ *&                 "WORKAREA (LINHA)
+ *&---------------------------------------------------------------------*
+DATA: w_clientes TYPE ztcliente0440.
+
+
+ *&---------------------------------------------------------------------*
+ *&
+ *&                      "EVENTO DE EXECUÇÃO
+ *&
+ *&---------------------------------------------------------------------*
+
+
+"******** O COMANDO START-OF-SELECTION É UTILIZADO PARA TODA EXECUÇÃO APÓS O F8 (COMPILAR) ********
+START-OF-SELECTION.
+
+
+"******** QUANDO A OPÇÃO EXIBIR RELATÓRIO FOR MARCADA:
+IF r_exi = 'X'. 
+    SELECT *                    "Seleciona todos os campos
+    FROM ztcliente0440          "na tabela do BD
+    INTO TABLE t_clientes       "movendo para tabela interna
+    WHERE cliente IN s_cli AND  "com as senguintes condições
+          rg IN s_rg AND
+          cpf IN s_cpf.
+                
+    
+    "Se a tabela t_clientes estiver preenchida: 
+    IF t_clientes IS NOT INITIAL.  "OUTRA POSSIBILIDADE >> sy-subrc = 0.
+        LOOP AT t_clientes INTO w_clientes."ler todos os registros da tabela interna, movendo para a linha
+            "exibir relatório
+        ENDLOOP
+        
+    ENDIF
+ENDIF.

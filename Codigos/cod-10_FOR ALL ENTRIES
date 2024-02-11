@@ -1,0 +1,44 @@
+*&---------------------------------------------------------------------*
+*& Report ZR_GIRL0440_10
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZR_GIRL0440_10.
+
+*DECLARAÇÃO
+TABLES: mara,ekko." ekpo.
+
+PARAMETERS: p_matnr TYPE mara-matnr.
+
+
+SELECT-OPTIONS: s_ebeln FOR ekko-ebeln.
+
+*OUTROS OBJETOS
+
+DATA: t_mara TYPE TABLE OF mara,
+      t_ekko TYPE TABLE OF ekko,
+      t_ekpo TYPE TABLE OF ekpo.
+
+
+*EVENTO DE EXECUÇÃO
+
+START-OF-SELECTION.
+
+SELECT *
+  FROM mara
+  INTO TABLE t_mara
+  WHERE matnr = p_matnr.
+
+SELECT *
+  FROM EKKO
+  INTO TABLE t_ekko
+  WHERE ebeln IN s_ebeln.
+
+IF SY-SUBRC = 0.
+  SELECT *
+    FROM ekpo
+    INTO TABLE t_ekpo
+    FOR ALL ENTRIES IN t_ekko
+    WHERE ebeln = t_ekko-ebeln.
+
+ENDIF.
